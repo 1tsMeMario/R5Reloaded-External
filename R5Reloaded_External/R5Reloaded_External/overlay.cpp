@@ -13,17 +13,6 @@ uint64_t GetEntityById(uint64_t GameBaseAddr, int Ent);
 bool WorldToScreen(Vector3 from, float* m_vMatrix, int targetWidth, int targetHeight, Vector2& to);
 Vector3 GetEntityBonePosition(uintptr_t ent, int BoneId, Vector3 BasePosition);
 
-/*  // Šù’m‚ÌƒoƒOF
-    * ’´Š‹ß‹——£‚É‚¢‚é“G‚ÉAim‚ª”½‰‚µ‚È‚¢‚±‚Æ‚ª‚ ‚é
-    -> ƒ`ƒFƒbƒN‚·‚éBONE‚Ì”‚ğ‘‚â‚·
-
-    * WeaponHandle‚ª‚¤‚Ü‚­æ“¾‚Å‚«‚È‚¢
-    -> R5Reloaded‚Ì‚¹‚¢‚È‚Ì‚Å‚Ç‚¤‚µ‚æ‚¤‚à‚È‚¢
-    
-    * ƒ_ƒ~[‚ÌvecAbsVelocity‚ªæ“¾‚Å‚«‚È‚¢
-    -> R5Reloaded‚Ì‚¹‚¢‚È‚Ì‚Å‚Ç‚¤‚µ‚æ‚¤‚à‚È‚¢
-*/
-
 void Overlay::m_Info()
 {
     ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -264,7 +253,7 @@ void Overlay::m_ESP()
         Vector2 ScreenPos = {};
         WorldToScreen(pEntity->m_localOrigin, &ViewMatrix._11, (float)GameSize.right, (float)GameSize.bottom, ScreenPos);
 
-        // ƒ^[ƒQƒbƒg‚ªƒŒƒ“ƒ_ƒŠƒ“ƒO‰Â”\‚È”ÍˆÍ“à‚É‚¢‚½‚ç
+        // ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°å¯èƒ½ãªç¯„å›²å†…ã«ã„ãŸã‚‰
         if (ScreenPos.x != 0.f && ScreenPos.y != 0.f)
         {   
             // Distance
