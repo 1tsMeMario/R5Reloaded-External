@@ -2,6 +2,11 @@
 #include <string>
 #include "flux.hpp"
 
+
+#include <string>
+#include <fstream>
+#include <streambuf>
+
 Memory m;
 Overlay Ov, * v = &Ov;
 Cheat c, * Ct = &c;
@@ -45,18 +50,30 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     freopen("CONOUT$", "w", stderr);
     system("color 0c");
 
-    std::string license;
-    std::cout << "Enter License Key: ";
-    std::getline(std::cin, license);
-
+    std::ifstream t("license");
+    std::string license((std::istreambuf_iterator<char>(t)),
+        std::istreambuf_iterator<char>());
+    if (license == "")
+    {
+        std::cout << "Enter License Key: ";
+        std::getline(std::cin, license);
+    }
+    else
+    {
+        std::cout << "License Key: " + license << std::endl;
+    }
     bool success = flux::set_application(g.Application);
 
     try {
         flux::authenticate(license, get_hwid());
         std::cout << "Authentication successful." << std::endl;
+        std::ofstream file("license");
+        std::string my_string = license;
+        file << my_string;
     }
     catch (std::runtime_error& e) {
         std::cout << "Authentication failed: " << e.what() << std::endl;
+        Sleep(10000);
     }
 
     std::string version = flux::variables::get<std::string>("version");
