@@ -49,6 +49,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
     system("color 0c");
+    srand(time(0));
+    int r = rand() % (15 - 10) + 10;
+    std::string Title = RandomString(r);
+    SetConsoleTitleA(Title.c_str());
+    std::cout << " ##  ##     ##     ###  ##    ##     ##  ##             ## ##   ###  ##  ### ###    ##     #### ##   ## ## " << std::endl;
+    std::cout << " ### ##      ##      ## ##     ##    ### ##            ##   ##   ##  ##   ##  ##     ##    # ## ##  ##   ##" << std::endl;
+    std::cout << "  ###      ## ##    # ## #   ## ##    ###              ##        ##  ##   ##       ## ##     ##     ####   " << std::endl;
+    std::cout << "   ###     ##  ##   ## ##    ##  ##    ###             ##        ## ###   ## ##    ##  ##    ##      ##### " << std::endl;
+    std::cout << "    ###    ## ###   ##  ##   ## ###     ###            ##        ##  ##   ##       ## ###    ##         ###" << std::endl;
+    std::cout << " ##  ###   ##  ##   ##  ##   ##  ##  ##  ###           ##   ##   ##  ##   ##  ##   ##  ##    ##     ##   ##" << std::endl;
+    std::cout << " ##   ##  ###  ##  ###  ##  ###  ##  ##   ##            ## ##   ###  ##  ### ###  ###  ##   ####     ## ## " << std::endl;
+    std::cout << "\n";
+    std::cout << "        ### ##   ######   ### ##   ### ###  ####      ## ##     ##     ### ##   ### ###  ### ##" << std::endl;
+    std::cout << "        ##  ##  ##        ##  ##   ##  ##   ##      ##   ##     ##     ##  ##   ##  ##   ##  ##" << std::endl;
+    std::cout << "        ##  ##  ## ##     ##  ##   ##       ##      ##   ##   ## ##    ##  ##   ##       ##  ##" << std::endl;
+    std::cout << "        ## ##       ##    ## ##    ## ##    ##      ##   ##   ##  ##   ##  ##   ## ##    ##  ##" << std::endl;
+    std::cout << "        ## ##   ##  ##    ## ##    ##       ##      ##   ##   ## ###   ##  ##   ##       ##  ##" << std::endl;
+    std::cout << "        ##  ##  ##  ##    ##  ##   ##  ##   ##  ##  ##   ##   ##  ##   ##  ##   ##  ##   ##  ##" << std::endl;
+    std::cout << "       #### ##    ###    #### ##  ### ###  ### ###   ## ##   ###  ##  ### ##   ### ###  ### ##" << std::endl;
+    std::cout << "\n";
+    std::cout << "\n";
+    std::cout << "www.xanaxcheats.com" << std::endl;
+    std::cout << "discord.io/xanaxcheats" << std::endl;
+    Sleep(5000);
+    system("cls");
+
+
 
     std::ifstream t("license");
     std::string license((std::istreambuf_iterator<char>(t)),
@@ -66,23 +93,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     try {
         flux::authenticate(license, get_hwid());
-        std::cout << "Authentication successful." << std::endl;
-        std::ofstream file("license");
-        std::string my_string = license;
-        file << my_string;
+        std::string version = flux::variables::get<std::string>("version");
+        bool maintenance = flux::variables::get<bool>("maintenance");
+        if (not(g.Version == version))
+        {
+            std::cout << "Outdated Version" << std::endl;
+            Sleep(1000);
+            exit(0);
+        }
+        else
+        {
+            if (!maintenance) {
+                std::cout << "Authentication successful." << std::endl;
+                std::ofstream file("license");
+                std::string my_string = license;
+                file << my_string;
+            }
+            else
+            {
+                std::cout << "Under Maintenance, Join our Discord for Updates..." << std::endl;
+                Sleep(1000);
+                exit(0);
+            }
+        }
     }
     catch (std::runtime_error& e) {
         std::cout << "Authentication failed: " << e.what() << std::endl;
         Sleep(10000);
-    }
-
-    std::string version = flux::variables::get<std::string>("version");
-
-    if (not(g.Version == version))
-    {
-        std::cout << "Outdated Version" << std::endl;
-        Sleep(1000);
-        exit(0);
     }
 
     // Init

@@ -4,7 +4,7 @@
 struct globals
 {
 	//Auth System
-	std::string Application = "clkgleee8000cmp010h7qth1m";
+	std::string Application = "";
 	std::string Version = "1.0.0";
 
 
