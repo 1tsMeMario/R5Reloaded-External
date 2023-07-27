@@ -26,7 +26,7 @@ struct globals
 
 	// Misc
 	bool SpeedHx = false;
-	float Speed = 2.f;
+	//float Speed = 2.f;
 	int DownTime = 0;
 };
 

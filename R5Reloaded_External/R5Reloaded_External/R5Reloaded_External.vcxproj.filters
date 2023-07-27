@@ -119,9 +119,6 @@
     <ClInclude Include="flux.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winhide.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Utils\SimpleMath\SimpleMath.inl">

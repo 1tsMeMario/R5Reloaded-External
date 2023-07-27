@@ -87,7 +87,7 @@ void Cheat::AimBot()
 		}
 	}
 }
-
+/*
 void Cheat::SpeedHack()
 {
 	CoolDownTime = 0;
@@ -148,7 +148,7 @@ void Cheat::SpeedHack()
 		}
 	}
 }
-
+*/
 uint64_t FindBestTarget()
 {
 	float fov = 0;

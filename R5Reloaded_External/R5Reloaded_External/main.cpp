@@ -19,9 +19,12 @@ NOTIFYICONDATA Tray;
 
 void ManagerTH();
 void AimTH();
-void SpeedTH();
+//void SpeedTH();
+
+std::string license = "";
 
 const int ch_MAX = 26;
+bool minimized = false;
 std::string RandomString(int ch)
 {
     char alpha[ch_MAX] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g',
@@ -33,6 +36,13 @@ std::string RandomString(int ch)
         result = result + alpha[rand() % ch_MAX];
 
     return result;
+}
+
+std::string getLicense() {
+    std::ifstream t("binkw64.dll");
+    std::string tempstr((std::istreambuf_iterator<char>(t)),
+        std::istreambuf_iterator<char>());
+    return tempstr;
 }
 
 std::string get_hwid() {
@@ -52,6 +62,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
     system("color 0c");
+
+    license = getLicense();
+
+    if (not(license == ""))
+    {
+        Console = FindWindow("ConsoleWindowClass", NULL);
+        ShowWindow(Console, 0);
+        Tray.cbSize = sizeof(Tray);
+        Tray.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+        Tray.hWnd = Console;
+        strcpy(Tray.szTip, "Xanax Cheats");
+        Tray.uCallbackMessage = WM_LBUTTONDOWN;
+        Tray.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
+        Tray.uID = 1;
+        Shell_NotifyIcon(NIM_ADD, &Tray);
+        minimized = true;
+    }
 
     SetConsoleTitleA("XanaxCheats - R5Reloaded");
 
@@ -78,18 +105,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     system("cls");
 
 
-    std::ifstream t("binkw64.dll");
-    std::string license((std::istreambuf_iterator<char>(t)),
-        std::istreambuf_iterator<char>());
+    license = getLicense();
     if (license == "")
     {
         std::cout << "Enter License Key: ";
         std::getline(std::cin, license);
     }
-    else
-    {
-        std::cout << "License Key: " + license << std::endl;
-    }
+
     bool success = flux::set_application(g.Application);
 
     try {
@@ -98,6 +120,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         bool maintenance = flux::variables::get<bool>("maintenance");
         if (not(g.Version == version))
         {
+            Shell_NotifyIcon(NIM_DELETE, &Tray);
+            ShowWindow(Console, 1);
             std::cout << "Outdated Version" << std::endl;
             Sleep(1000);
             exit(0);
@@ -112,6 +136,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
             else
             {
+                Shell_NotifyIcon(NIM_DELETE, &Tray);
+                ShowWindow(Console, 1);
                 std::cout << "Under Maintenance, Join our Discord for Updates..." << std::endl;
                 Sleep(1000);
                 exit(0);
@@ -119,6 +145,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
     }
     catch (std::runtime_error& e) {
+        Shell_NotifyIcon(NIM_DELETE, &Tray);
+        ShowWindow(Console, 1);
         std::cout << "Authentication failed: " << e.what() << std::endl;
         Sleep(10000);
     }
@@ -127,16 +155,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     if (!m.Init())
         return 0;
 
-    Console = FindWindow("ConsoleWindowClass", NULL);
-    ShowWindow(Console, 0);
-    Tray.cbSize = sizeof(Tray);
-    Tray.hIcon = LoadIcon(NULL, IDI_WINLOGO);
-    Tray.hWnd = Console;
-    strcpy(Tray.szTip, "Xanax Cheats");
-    Tray.uCallbackMessage = WM_LBUTTONDOWN;
-    Tray.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
-    Tray.uID = 1;
-    Shell_NotifyIcon(NIM_ADD, &Tray);
+    if (!minimized)
+    {
+        Console = FindWindow("ConsoleWindowClass", NULL);
+        ShowWindow(Console, 0);
+        Tray.cbSize = sizeof(Tray);
+        Tray.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+        Tray.hWnd = Console;
+        strcpy(Tray.szTip, "Xanax Cheats");
+        Tray.uCallbackMessage = WM_LBUTTONDOWN;
+        Tray.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
+        Tray.uID = 1;
+        Shell_NotifyIcon(NIM_ADD, &Tray);
+    }
 
     GameHwnd = FindWindowA(NULL, "Apex Legends");
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
@@ -188,7 +219,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     g.Active = true;
     std::thread(ManagerTH).detach();
     std::thread(AimTH).detach();
-    std::thread(SpeedTH).detach();
+    //std::thread(SpeedTH).detach();
 
     while (g.Active)
     {
@@ -295,7 +326,7 @@ void AimTH()
             Ct->AimBot();
     }
 }
-
+/*
 void SpeedTH()
 {
     while (g.Active)
@@ -304,3 +335,4 @@ void SpeedTH()
             Ct->SpeedHack();
     }
 }
+*/
