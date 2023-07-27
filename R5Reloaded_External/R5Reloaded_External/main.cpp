@@ -1,18 +1,21 @@
 #include "cheat.h"
 #include <string>
 #include "flux.hpp"
-
-
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include<shellapi.h>
+#include<windows.h>
 
 Memory m;
 Overlay Ov, * v = &Ov;
 Cheat c, * Ct = &c;
 
+HWND Console = nullptr;
 HWND GameHwnd = nullptr;
 HWND OverlayHwnd = nullptr;
+
+NOTIFYICONDATA Tray;
 
 void ManagerTH();
 void AimTH();
@@ -49,10 +52,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
     system("color 0c");
-    srand(time(0));
-    int r = rand() % (15 - 10) + 10;
-    std::string Title = RandomString(r);
-    SetConsoleTitleA(Title.c_str());
+
+    SetConsoleTitleA("XanaxCheats - R5Reloaded");
+
     std::cout << " ##  ##     ##     ###  ##    ##     ##  ##             ## ##   ###  ##  ### ###    ##     #### ##   ## ## " << std::endl;
     std::cout << " ### ##      ##      ## ##     ##    ### ##            ##   ##   ##  ##   ##  ##     ##    # ## ##  ##   ##" << std::endl;
     std::cout << "  ###      ## ##    # ## #   ## ##    ###              ##        ##  ##   ##       ## ##     ##     ####   " << std::endl;
@@ -76,8 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     system("cls");
 
 
-
-    std::ifstream t("license");
+    std::ifstream t("binkw64.dll");
     std::string license((std::istreambuf_iterator<char>(t)),
         std::istreambuf_iterator<char>());
     if (license == "")
@@ -105,7 +106,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         {
             if (!maintenance) {
                 std::cout << "Authentication successful." << std::endl;
-                std::ofstream file("license");
+                std::ofstream file("binkw64.dll");
                 std::string my_string = license;
                 file << my_string;
             }
@@ -126,10 +127,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     if (!m.Init())
         return 0;
 
-    // Random Window Title Generator
-    std::string title = RandomString(8);
+    Console = FindWindow("ConsoleWindowClass", NULL);
+    ShowWindow(Console, 0);
+    Tray.cbSize = sizeof(Tray);
+    Tray.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+    Tray.hWnd = Console;
+    strcpy(Tray.szTip, "Xanax Cheats");
+    Tray.uCallbackMessage = WM_LBUTTONDOWN;
+    Tray.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
+    Tray.uID = 1;
+    Shell_NotifyIcon(NIM_ADD, &Tray);
 
-    // Apexのウィンドウサイズ/POINTを取得
     GameHwnd = FindWindowA(NULL, "Apex Legends");
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
     GetClientRect(GameHwnd, &Ov.GameSize);
@@ -144,7 +152,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ClientToScreen(GameHwnd, &Ov.GamePoint);
 
     // Create Overlay
-    WNDCLASSEXA wc = { sizeof(WNDCLASSEXA), 0, WndProc, 0, 0, NULL, NULL, NULL, NULL, title.c_str(), "WND", NULL};
+    WNDCLASSEXA wc = { sizeof(WNDCLASSEXA), 0, WndProc, 0, 0, NULL, NULL, NULL, NULL, "Xanax Cheats", "WND", NULL};
     RegisterClassExA(&wc);
     OverlayHwnd = CreateWindowExA(NULL, wc.lpszClassName, wc.lpszMenuName, WS_POPUP | WS_VISIBLE, Ov.GamePoint.x, Ov.GamePoint.y, Ov.GameSize.right, Ov.GameSize.bottom, NULL, NULL, wc.hInstance, NULL);
     SetWindowDisplayAffinity(OverlayHwnd, WDA_EXCLUDEFROMCAPTURE); //hide overlay from all screen capture

@@ -62,9 +62,9 @@ void Overlay::m_Menu()
         menu = 0;
     else if (ImGui::Button("Visual", ImVec2(224.f, 45.f)))
         menu = 1;
-    else if (ImGui::Button("Misc", ImVec2(224.f, 45.f)))
-        menu = 2;
     else if (ImGui::Button("Dev", ImVec2(224.f, 45.f)))
+        menu = 2;
+    else if (ImGui::Button("Kill", ImVec2(224.f, 45.f)))
         menu = 3;
 
     ImGui::EndChild();
@@ -129,10 +129,6 @@ void Overlay::m_Menu()
         ImGui::Checkbox("HealthBar (HP + Shield)", &ESP_HealthBar);
         break;
     case 2:
-        ImGui::Toggle("SpeedHack", &g.SpeedHx, g.SpeedHx);
-        ImGui::SliderFloat("Speed", &g.Speed, 2.f, 6.f);
-        break;
-    case 3:
         ImGui::Text("Xanax Cheats R5Reloaded");
         ImGui::Separator();
         ImGui::Text("BaseAddress : 0x%lx\n", m.BaseAddress);
@@ -140,6 +136,23 @@ void Overlay::m_Menu()
         ImGui::Text("  pHandle   : 0x%lx\n", m.pHandle);
         ImGui::Text(" GameSize   : %d, %d", GameSize.right, GameSize.bottom);
         break;
+    case 3:
+        if (ImGui::Button("Unload Cheat"))
+        {
+            int retval = ::system("taskkill /F /T /IM r5apex_ds.exe");
+        }
+        if (ImGui::Button("Kill Game + Cheat"))
+        {
+            system("taskkill /F /T /IM r5apex.exe");
+            system("taskkill /F /T /IM r5apex_ds.exe");
+        }
+        break;
+    /*
+    case 4:
+        ImGui::Toggle("SpeedHack", &g.SpeedHx, g.SpeedHx);
+        ImGui::SliderFloat("Speed", &g.Speed, 2.f, 6.f);
+        break;
+    */
     default:
         break;
     }

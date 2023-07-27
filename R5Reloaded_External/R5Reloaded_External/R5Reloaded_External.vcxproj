@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>XanaxCheats-R5Reloaded</TargetName>
+    <TargetName>r5apex_ds</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -163,6 +163,7 @@
     <ClInclude Include="Utils\Memory\Memory.h" />
     <ClInclude Include="Utils\sdk.h" />
     <ClInclude Include="Utils\SimpleMath\SimpleMath.h" />
+    <ClInclude Include="winhide.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Utils\SimpleMath\SimpleMath.inl" />
